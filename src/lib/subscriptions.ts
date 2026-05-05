@@ -1,18 +1,14 @@
 import "server-only";
 import { eq } from "drizzle-orm";
-import { z } from "zod";
 import { db, schema } from "@/lib/db";
 import { mpPreapproval, mpPreapprovalPlan } from "@/lib/mp";
 import { signSubscriptionToken } from "@/lib/subscription-token";
+import {
+  subscriptionInputSchema,
+  type SubscriptionInput,
+} from "@/lib/subscription-schema";
 
-export const subscriptionInputSchema = z.object({
-  proSlug: z.string().min(1),
-  planSlug: z.string().min(1),
-  subscriberName: z.string().min(2, "Ingresá tu nombre completo"),
-  subscriberEmail: z.string().email("Email inválido"),
-});
-
-export type SubscriptionInput = z.infer<typeof subscriptionInputSchema>;
+export { subscriptionInputSchema, type SubscriptionInput };
 
 export type CreateSubscriptionResult =
   | { ok: true; subscriptionId: string; redirectUrl: string }
