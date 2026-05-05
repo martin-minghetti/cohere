@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, RefreshCw, BarChart3, Pause } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Sparkles, RefreshCw, Wallet, Users } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getPros } from "@/lib/queries";
@@ -31,107 +32,117 @@ export default async function HomePage() {
     <>
       <SiteHeader />
 
-      <section className="border-b border-border/60">
-        <div className="mx-auto max-w-3xl px-6 pt-20 pb-16 lg:px-8">
-          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+      <section className="relative isolate overflow-hidden border-b border-border/40">
+        <div className="mx-auto max-w-7xl px-6 pt-24 pb-32 lg:px-10">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-primary">
+            <Sparkles className="h-3 w-3" />
             Demo · Mercado Pago Subscriptions
-          </p>
-          <h1 className="mt-5 text-balance text-4xl font-semibold leading-[1.15] tracking-tight md:text-5xl">
-            Charge monthly memberships without fighting the integration.
+          </div>
+          <h1 className="mt-6 max-w-3xl font-serif text-5xl leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
+            Cobrá tu membresía mensual sin pelearte con la integración.
           </h1>
-          <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
-            Cohere connects yoga, pilates and wellness pros with their students through
-            recurring Mercado Pago subscriptions. You teach. Money lands automatically.
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            Cohere conecta a profesionales de yoga, pilates y wellness con sus
+            alumnos vía suscripciones recurrentes de Mercado Pago. Vos das
+            clases. La plata entra automática.
           </p>
-          <div className="mt-8 flex flex-wrap gap-2.5">
+          <div className="mt-10 flex flex-wrap gap-3">
             <Link
-              href="#pros"
-              className="inline-flex h-10 items-center gap-2 rounded-md bg-primary px-4 text-[13px] font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+              href="#profesionales"
+              className="inline-flex h-12 items-center gap-2 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              Browse pros
-              <ArrowRight className="h-3.5 w-3.5" />
+              Ver profesionales
+              <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="https://github.com/martin-minghetti/cohere"
               target="_blank"
-              className="inline-flex h-10 items-center gap-2 rounded-md border border-border bg-card px-4 text-[13px] font-medium transition-colors hover:bg-secondary"
+              className="inline-flex h-12 items-center gap-2 rounded-full border border-border bg-card px-6 text-sm font-medium transition-colors hover:bg-secondary"
             >
-              Open source
+              Código abierto
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="border-b border-border/60 bg-secondary/40">
-        <div className="mx-auto max-w-6xl px-6 py-14 lg:px-8">
-          <div className="grid gap-8 md:grid-cols-3">
+      <section className="border-b border-border/40 bg-secondary/30">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="grid gap-12 md:grid-cols-3">
             <Feature
               Icon={RefreshCw}
-              title="Automatic monthly billing"
-              body="MP charges the student's card each month. No chasing payments."
+              title="Cobro automático mensual"
+              body="MP debita la tarjeta del alumno cada mes. No persigas pagos, no mandes recordatorios."
             />
             <Feature
-              Icon={Pause}
-              title="Pause and cancel"
-              body="Students can pause or cancel from their portal. You see it instantly."
+              Icon={Wallet}
+              title="Pausa y cancelación real"
+              body="El alumno puede pausar o darse de baja desde su portal. Vos te enterás al instante."
             />
             <Feature
-              Icon={BarChart3}
-              title="Real metrics"
-              body="Active subscribers, MRR, churn. The data that actually informs decisions."
+              Icon={Users}
+              title="Dashboard con métricas reales"
+              body="Subscribers activos, ingreso mensual, churn. La data que importa para decidir."
             />
           </div>
         </div>
       </section>
 
-      <section id="pros" className="border-b border-border/60">
-        <div className="mx-auto max-w-6xl px-6 py-20 lg:px-8">
+      <section id="profesionales" className="border-b border-border/40">
+        <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10">
           <div className="flex items-baseline justify-between gap-4">
-            <h2 className="text-2xl font-semibold tracking-tight">
-              Pros on Cohere
+            <h2 className="font-serif text-4xl tracking-tight md:text-5xl">
+              Profesionales en Cohere
             </h2>
-            <p className="text-[13px] text-muted-foreground">
-              {items.length} available
+            <p className="text-sm text-muted-foreground">
+              {items.length} disponibles
             </p>
           </div>
-
-          <ul className="mt-10 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {items.map(({ pro, cheapest }) => (
-              <li key={pro.id}>
-                <Link
-                  href={`/p/${pro.slug}`}
-                  className="group flex flex-col gap-5 rounded-xl border border-border/60 bg-card p-5 transition-all hover:border-border hover:shadow-sm"
-                >
-                  <div className="flex items-start gap-4">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={pro.avatarUrl}
-                      alt={pro.name}
-                      className="h-14 w-14 shrink-0 rounded-full object-cover"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[15px] font-semibold">
-                        {pro.name}
-                      </p>
-                      <p className="mt-0.5 text-[12px] text-muted-foreground">
-                        {formatDiscipline(pro.discipline)} · {pro.city}
-                      </p>
-                    </div>
-                  </div>
-                  <p className="line-clamp-3 text-[13px] leading-relaxed text-muted-foreground">
-                    {pro.bio}
-                  </p>
-                  <div className="flex items-baseline justify-between border-t border-border/60 pt-4 text-[13px]">
-                    <span className="text-muted-foreground">From</span>
-                    <span className="font-medium text-foreground">
-                      {cheapest ? formatPriceARS(cheapest.pricePerMonth) : "—"}
-                      <span className="text-muted-foreground"> / mo</span>
+              <Link
+                key={pro.id}
+                href={`/p/${pro.slug}`}
+                className="group flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card transition-shadow hover:shadow-lg"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={pro.coverUrl}
+                    alt={pro.name}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <span className="absolute left-4 top-4 rounded-full bg-background/90 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.15em] text-foreground backdrop-blur">
+                    {formatDiscipline(pro.discipline)}
+                  </span>
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h3 className="font-serif text-2xl">{pro.name}</h3>
+                    <span className="text-xs text-muted-foreground">
+                      {pro.city}
                     </span>
                   </div>
-                </Link>
-              </li>
+                  <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground">
+                    {pro.bio}
+                  </p>
+                  <div className="mt-6 flex items-baseline justify-between border-t border-border/40 pt-5">
+                    <span className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
+                      desde
+                    </span>
+                    <span className="font-serif text-2xl">
+                      {cheapest
+                        ? formatPriceARS(cheapest.pricePerMonth)
+                        : "—"}
+                      <span className="text-sm font-normal text-muted-foreground">
+                        {" "}
+                        / mes
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </Link>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
@@ -151,11 +162,11 @@ function Feature({
 }) {
   return (
     <div>
-      <div className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
-        <Icon className="h-4 w-4" />
+      <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+        <Icon className="h-5 w-5" />
       </div>
-      <h3 className="mt-4 text-[15px] font-semibold">{title}</h3>
-      <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+      <h3 className="mt-5 font-serif text-2xl">{title}</h3>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
         {body}
       </p>
     </div>

@@ -44,7 +44,7 @@ test.describe("Cohere subscription happy path", () => {
     await page.locator("#subscriberName").fill("E2E Test Suscriptor");
     await page.locator("#subscriberEmail").fill(subscriberEmail);
 
-    const submitBtn = page.getByRole("button", { name: /confirm and pay/i });
+    const submitBtn = page.getByRole("button", { name: /confirmar y pagar/i });
     await expect(submitBtn).toBeEnabled();
     await submitBtn.click();
 
@@ -52,17 +52,17 @@ test.describe("Cohere subscription happy path", () => {
       timeout: 30_000,
     });
 
-    await expect(page.getByText(/authorize your subscription/i)).toBeVisible();
+    await expect(page.getByText(/autorizá tu suscripción/i)).toBeVisible();
     await expect(page.getByText(subscriberEmail).first()).toBeVisible();
 
-    await page.getByRole("button", { name: /authorize.*demo/i }).click();
+    await page.getByRole("button", { name: /autorizar suscripción/i }).click();
 
     await page.waitForURL(/\/sub\/[a-f0-9-]+$/, { timeout: 30_000 });
 
-    await expect(page.getByText(/^active$/i).first()).toBeVisible();
-    await expect(page.getByRole("button", { name: /^pause$/i })).toBeVisible();
+    await expect(page.getByText(/activa/i).first()).toBeVisible();
+    await expect(page.getByRole("button", { name: /pausar/i })).toBeVisible();
     await expect(
-      page.getByRole("button", { name: /cancel subscription/i }),
+      page.getByRole("button", { name: /cancelar suscripción/i }),
     ).toBeVisible();
   });
 });

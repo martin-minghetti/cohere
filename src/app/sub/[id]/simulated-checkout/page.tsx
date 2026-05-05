@@ -45,68 +45,75 @@ export default async function SimulatedCheckoutPage({
     <>
       <SiteHeader />
 
-      <section className="mx-auto max-w-md px-6 pt-12 pb-24 lg:px-8">
-        <div className="flex gap-2.5 rounded-md border border-amber-300/70 bg-amber-50/70 p-3.5 text-[12px] leading-relaxed text-amber-900">
-          <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-700" />
-          <div>
-            <p className="font-medium">Demo mode · no real charge</p>
-            <p className="mt-0.5 text-amber-900/80">
-              The backend integrates the full preapproval_plan + preapproval +
-              webhook flow. The actual payment is simulated so anyone can
-              exercise the UX without a card.
-            </p>
+      <section className="mx-auto max-w-2xl px-6 pt-12 pb-32 lg:px-10">
+        <div className="rounded-xl border border-amber-300/60 bg-amber-50/80 p-5 text-sm">
+          <div className="flex gap-3">
+            <Info className="mt-0.5 h-5 w-5 shrink-0 text-amber-700" />
+            <div className="space-y-1">
+              <p className="font-medium text-amber-900">
+                Modo demo · no se procesa pago real
+              </p>
+              <p className="leading-relaxed text-amber-800/90">
+                Esta es una simulación de Mercado Pago Subscriptions. El backend
+                integra el flow completo (preapproval_plan + preapproval +
+                webhook), pero los pagos están simulados para que cualquiera
+                pruebe la UX sin tarjeta real.
+              </p>
+            </div>
           </div>
         </div>
 
-        <h1 className="mt-8 text-2xl font-semibold tracking-tight">
-          Authorize your subscription
+        <h1 className="mt-10 font-serif text-4xl leading-[1.1] md:text-5xl">
+          Autorizá tu suscripción
         </h1>
-        <p className="mt-1.5 text-[13px] text-muted-foreground">
-          If you authorize, the card on file will be charged monthly.
+        <p className="mt-3 text-lg text-foreground/80">
+          Si autorizás, vamos a debitarte automáticamente cada mes.
         </p>
 
-        <div className="mt-8 rounded-xl border border-border/60 bg-card p-5">
-          <p className="text-[12px] text-muted-foreground">{pro.name}</p>
-          <h2 className="mt-1 text-[15px] font-semibold">{plan.name}</h2>
+        <div className="mt-10 rounded-2xl border border-border/60 bg-card p-7 shadow-sm">
+          <p className="text-sm text-muted-foreground">{pro.name}</p>
+          <h2 className="mt-1 font-serif text-2xl">{plan.name}</h2>
 
-          <dl className="mt-5 space-y-2.5 border-t border-border/60 pt-4 text-[13px]">
-            <Row label="Subscriber" value={sub.subscriberName} />
+          <dl className="mt-7 space-y-4 text-sm">
+            <Row label="A nombre de" value={sub.subscriberName} />
             <Row label="Email" value={sub.subscriberEmail} />
             <Row
-              label="Monthly"
+              label="Cobro mensual"
               value={formatPriceARS(plan.pricePerMonth)}
               bold
             />
           </dl>
         </div>
 
-        <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
-          <form action={authorize} className="flex-1">
+        <div className="mt-10 grid gap-3 sm:grid-cols-[1fr_auto]">
+          <form action={authorize}>
             <Button
               type="submit"
-              className="h-10 w-full rounded-md text-[13px] font-medium"
+              size="lg"
+              className="w-full rounded-full text-base"
             >
-              <Check className="mr-2 h-3.5 w-3.5" />
-              Authorize (demo)
+              <Check className="mr-2 h-4 w-4" />
+              Autorizar suscripción (demo)
             </Button>
           </form>
-          <form action={reject} className="sm:w-auto">
+          <form action={reject}>
             <Button
               type="submit"
               variant="outline"
-              className="h-10 w-full rounded-md text-[13px] font-medium sm:w-auto"
+              size="lg"
+              className="w-full rounded-full text-base sm:w-auto"
             >
-              <X className="mr-2 h-3.5 w-3.5" />
-              Reject
+              <X className="mr-2 h-4 w-4" />
+              Simular rechazo
             </Button>
           </form>
         </div>
 
         <Link
           href={`/p/${pro.slug}`}
-          className="mt-8 inline-block text-[12px] text-muted-foreground hover:text-foreground"
+          className="mt-8 inline-block text-sm text-muted-foreground underline-offset-4 hover:underline"
         >
-          ← Back to profile
+          ← Volver al perfil
         </Link>
       </section>
 
@@ -125,11 +132,9 @@ function Row({
   bold?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between border-b border-border/40 pb-3 last:border-none">
       <dt className="text-muted-foreground">{label}</dt>
-      <dd className={bold ? "text-base font-semibold" : "font-medium"}>
-        {value}
-      </dd>
+      <dd className={bold ? "font-serif text-lg" : "font-medium"}>{value}</dd>
     </div>
   );
 }
