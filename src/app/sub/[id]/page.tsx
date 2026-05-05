@@ -12,13 +12,17 @@ export const dynamic = "force-dynamic";
 
 const STATUS_META: Record<
   string,
-  { label: string; tone: "ok" | "wait" | "err"; Icon: React.ComponentType<{ className?: string }> }
+  {
+    label: string;
+    tone: "ok" | "wait" | "err";
+    Icon: React.ComponentType<{ className?: string }>;
+  }
 > = {
-  active: { label: "Activa", tone: "ok", Icon: Check },
-  pending: { label: "Pendiente de autorización", tone: "wait", Icon: Clock },
-  paused: { label: "Pausada", tone: "wait", Icon: Pause },
-  cancelled: { label: "Cancelada", tone: "err", Icon: X },
-  failed: { label: "Rechazada", tone: "err", Icon: X },
+  active: { label: "Active", tone: "ok", Icon: Check },
+  pending: { label: "Pending authorization", tone: "wait", Icon: Clock },
+  paused: { label: "Paused", tone: "wait", Icon: Pause },
+  cancelled: { label: "Cancelled", tone: "err", Icon: X },
+  failed: { label: "Rejected", tone: "err", Icon: X },
 };
 
 export default async function SubscriptionPage({
@@ -45,78 +49,75 @@ export default async function SubscriptionPage({
     <>
       <SiteHeader />
 
-      <section className="mx-auto max-w-2xl px-6 pt-16 pb-32 lg:px-10">
-        <div className="flex items-center gap-3">
+      <section className="mx-auto max-w-md px-6 pt-12 pb-24 lg:px-8">
+        <div className="flex items-center gap-2.5">
           <span
-            className={`flex h-12 w-12 items-center justify-center rounded-full ${
+            className={`flex h-7 w-7 items-center justify-center rounded-md ${
               meta.tone === "ok"
-                ? "bg-primary text-primary-foreground"
+                ? "bg-primary/10 text-primary"
                 : meta.tone === "wait"
                   ? "bg-secondary text-foreground"
-                  : "bg-destructive/15 text-destructive"
+                  : "bg-destructive/10 text-destructive"
             }`}
           >
-            <StatusIcon className="h-6 w-6" />
+            <StatusIcon className="h-3.5 w-3.5" />
           </span>
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+          <p className="text-[12px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
             {meta.label}
           </p>
         </div>
 
-        <h1 className="mt-6 font-serif text-4xl leading-[1.1] md:text-5xl">
+        <h1 className="mt-5 text-3xl font-semibold tracking-tight">
           {isActive
-            ? `Listo, ${sub.subscriberName.split(" ")[0]}.`
+            ? `You're in, ${sub.subscriberName.split(" ")[0]}.`
             : isPaused
-              ? "Suscripción pausada"
+              ? "Subscription paused"
               : sub.status === "cancelled"
-                ? "Suscripción cancelada"
+                ? "Subscription cancelled"
                 : sub.status === "failed"
-                  ? "No pudimos confirmar el pago"
-                  : "Esperando autorización"}
+                  ? "Payment not confirmed"
+                  : "Awaiting authorization"}
         </h1>
 
         {isActive && sub.nextBillingDate && (
-          <p className="mt-3 text-lg text-foreground/80">
-            Próximo cobro:{" "}
+          <p className="mt-1.5 text-[13px] text-muted-foreground">
+            Next charge:{" "}
             <span className="font-medium text-foreground">
               {sub.nextBillingDate}
             </span>
           </p>
         )}
 
-        <div className="mt-10 rounded-2xl border border-border/60 bg-card p-7 shadow-sm">
+        <div className="mt-8 rounded-xl border border-border/60 bg-card p-5">
           <Link
             href={`/p/${pro.slug}`}
-            className="text-sm text-muted-foreground hover:text-foreground"
+            className="text-[12px] text-muted-foreground hover:text-foreground"
           >
             {pro.name}
           </Link>
-          <h2 className="mt-1 font-serif text-2xl">{plan.name}</h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          <h2 className="mt-1 text-[15px] font-semibold">{plan.name}</h2>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
             {plan.description}
           </p>
-          <div className="mt-7 flex items-baseline justify-between border-t border-border/40 pt-6">
-            <span className="text-sm text-muted-foreground">
-              Cobro mensual
-            </span>
-            <span className="font-serif text-3xl">
+          <div className="mt-5 flex items-baseline justify-between border-t border-border/60 pt-4">
+            <span className="text-[13px] text-muted-foreground">Monthly</span>
+            <span className="text-xl font-semibold tracking-tight">
               {formatPriceARS(plan.pricePerMonth)}
             </span>
           </div>
         </div>
 
         {(isActive || isPaused) && (
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
             {isActive && (
               <form action={pauseBound} className="flex-1">
                 <Button
                   type="submit"
                   variant="outline"
-                  size="lg"
-                  className="w-full rounded-full text-base"
+                  className="h-10 w-full rounded-md text-[13px] font-medium"
                 >
-                  <Pause className="mr-2 h-4 w-4" />
-                  Pausar
+                  <Pause className="mr-2 h-3.5 w-3.5" />
+                  Pause
                 </Button>
               </form>
             )}
@@ -124,11 +125,10 @@ export default async function SubscriptionPage({
               <form action={resumeBound} className="flex-1">
                 <Button
                   type="submit"
-                  size="lg"
-                  className="w-full rounded-full text-base"
+                  className="h-10 w-full rounded-md text-[13px] font-medium"
                 >
-                  <Play className="mr-2 h-4 w-4" />
-                  Reanudar
+                  <Play className="mr-2 h-3.5 w-3.5" />
+                  Resume
                 </Button>
               </form>
             )}
@@ -137,11 +137,10 @@ export default async function SubscriptionPage({
                 <Button
                   type="submit"
                   variant="outline"
-                  size="lg"
-                  className="w-full rounded-full text-base text-destructive hover:text-destructive"
+                  className="h-10 w-full rounded-md text-[13px] font-medium text-destructive hover:text-destructive"
                 >
-                  <X className="mr-2 h-4 w-4" />
-                  Cancelar suscripción
+                  <X className="mr-2 h-3.5 w-3.5" />
+                  Cancel subscription
                 </Button>
               </form>
             )}
@@ -150,9 +149,9 @@ export default async function SubscriptionPage({
 
         <Link
           href={`/p/${pro.slug}`}
-          className="mt-12 inline-block text-sm text-muted-foreground underline-offset-4 hover:underline"
+          className="mt-10 inline-block text-[12px] text-muted-foreground hover:text-foreground"
         >
-          ← Volver al perfil
+          ← Back to profile
         </Link>
       </section>
 

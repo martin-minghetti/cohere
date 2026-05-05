@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import { ArrowUpRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,19 +18,18 @@ function SubmitButton() {
   return (
     <Button
       type="submit"
-      size="lg"
       disabled={pending}
-      className="mt-2 w-full rounded-full text-base"
+      className="mt-1 h-10 w-full rounded-md text-[13px] font-medium"
     >
       {pending ? (
         <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Generando suscripción...
+          <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+          Generating subscription...
         </>
       ) : (
         <>
-          Confirmar y pagar
-          <ArrowUpRight className="ml-2 h-4 w-4" />
+          Confirm and pay
+          <ArrowRight className="ml-2 h-3.5 w-3.5" />
         </>
       )}
     </Button>
@@ -50,53 +49,65 @@ export function SubscribeForm({
   );
 
   return (
-    <form action={formAction} className="space-y-6">
+    <form action={formAction} className="space-y-4">
       <input type="hidden" name="proSlug" value={proSlug} />
       <input type="hidden" name="planSlug" value={planSlug} />
 
-      <div className="grid gap-2">
-        <Label htmlFor="subscriberName">Nombre completo</Label>
+      <div className="grid gap-1.5">
+        <Label
+          htmlFor="subscriberName"
+          className="text-[12px] font-medium text-muted-foreground"
+        >
+          Full name
+        </Label>
         <Input
           id="subscriberName"
           name="subscriberName"
           type="text"
           autoComplete="name"
           required
+          className="h-10 rounded-md text-[13px]"
         />
         {state.fieldErrors?.subscriberName && (
-          <p className="text-sm text-destructive">
+          <p className="text-[12px] text-destructive">
             {state.fieldErrors.subscriberName}
           </p>
         )}
       </div>
 
-      <div className="grid gap-2">
-        <Label htmlFor="subscriberEmail">Email</Label>
+      <div className="grid gap-1.5">
+        <Label
+          htmlFor="subscriberEmail"
+          className="text-[12px] font-medium text-muted-foreground"
+        >
+          Email
+        </Label>
         <Input
           id="subscriberEmail"
           name="subscriberEmail"
           type="email"
           autoComplete="email"
           required
+          className="h-10 rounded-md text-[13px]"
         />
         {state.fieldErrors?.subscriberEmail && (
-          <p className="text-sm text-destructive">
+          <p className="text-[12px] text-destructive">
             {state.fieldErrors.subscriberEmail}
           </p>
         )}
       </div>
 
       {state.error && !state.fieldErrors && (
-        <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+        <p className="rounded-md bg-destructive/10 px-3 py-2 text-[12px] text-destructive">
           {state.error}
         </p>
       )}
 
       <SubmitButton />
 
-      <p className="text-xs text-muted-foreground">
-        Vas a ser redirigido a Mercado Pago para autorizar el cobro mensual.
-        Podés cancelar cuando quieras.
+      <p className="text-[11px] leading-relaxed text-muted-foreground">
+        You will be redirected to Mercado Pago to authorize the monthly charge.
+        Cancel anytime.
       </p>
     </form>
   );

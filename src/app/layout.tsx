@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Cohere — Membresías recurrentes para profesionales",
+  title: "Cohere — Recurring memberships for wellness pros",
   description:
-    "Plataforma para que profesionales de yoga, pilates y wellness cobren mensualidades vía Mercado Pago Subscriptions. Demo portfolio.",
+    "Platform for yoga, pilates and wellness professionals to charge monthly memberships via Mercado Pago Subscriptions. Portfolio demo.",
 };
 
 export default function RootLayout({
@@ -26,10 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="es"
-      className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
-    >
+    <html lang="es" className={`${geist.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
       </body>

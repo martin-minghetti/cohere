@@ -23,34 +23,34 @@ export default async function SubscribePage({
     <>
       <SiteHeader />
 
-      <section className="mx-auto max-w-2xl px-6 pt-12 pb-32 lg:px-10">
+      <section className="mx-auto max-w-md px-6 pt-12 pb-24 lg:px-8">
         <Link
           href={`/p/${pro.slug}`}
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
+          className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground"
         >
-          <ArrowLeft className="h-4 w-4" />
-          Volver a {pro.name}
+          <ArrowLeft className="h-3.5 w-3.5" />
+          Back to {pro.name}
         </Link>
 
-        <h1 className="mt-8 font-serif text-4xl tracking-tight md:text-5xl">
-          Suscribirme
+        <h1 className="mt-8 text-2xl font-semibold tracking-tight">
+          Subscribe
         </h1>
 
-        <div className="mt-10 rounded-2xl border border-border/60 bg-card p-7 shadow-sm">
-          <p className="text-sm text-muted-foreground">{pro.name}</p>
-          <h2 className="mt-1 font-serif text-2xl">{plan.name}</h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+        <div className="mt-8 rounded-xl border border-border/60 bg-card p-5">
+          <p className="text-[12px] text-muted-foreground">{pro.name}</p>
+          <h2 className="mt-1 text-[15px] font-semibold">{plan.name}</h2>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
             {plan.description}
           </p>
-          <div className="mt-7 flex items-baseline justify-between border-t border-border/40 pt-6">
-            <span className="text-sm text-muted-foreground">Cobro mensual</span>
-            <span className="font-serif text-3xl">
+          <div className="mt-5 flex items-baseline justify-between border-t border-border/60 pt-4">
+            <span className="text-[13px] text-muted-foreground">Monthly</span>
+            <span className="text-xl font-semibold tracking-tight">
               {formatPriceARS(plan.pricePerMonth)}
             </span>
           </div>
         </div>
 
-        <div className="mt-10 rounded-2xl border border-border/60 bg-card p-7 shadow-sm">
+        <div className="mt-5 rounded-xl border border-border/60 bg-card p-5">
           <SubscribeForm proSlug={pro.slug} planSlug={plan.slug} />
         </div>
       </section>

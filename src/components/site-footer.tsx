@@ -2,14 +2,13 @@ import Link from "next/link";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto border-t border-border/40 bg-secondary/30">
-      <div className="mx-auto max-w-7xl px-6 py-10 lg:px-10">
-        <div className="flex flex-col gap-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+    <footer className="mt-auto border-t border-border/60">
+      <div className="mx-auto max-w-6xl px-6 py-8 lg:px-8">
+        <div className="flex flex-col gap-3 text-[13px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            <span className="font-serif text-base text-foreground">Cohere</span>{" "}
-            · demo portfolio · no es un negocio real
+            <span className="font-medium text-foreground">Cohere</span> · portfolio demo · not a real business
           </p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5">
             <Link
               href="https://github.com/martin-minghetti/cohere"
               target="_blank"
@@ -22,7 +21,7 @@ export function SiteFooter() {
               target="_blank"
               className="hover:text-foreground transition-colors"
             >
-              BUILD_LOG
+              Build log
             </Link>
           </div>
         </div>
