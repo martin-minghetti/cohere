@@ -6,7 +6,7 @@ Plataforma demo para profesionales (yoga / pilates / coaching) que cobran membre
 
 ## Live
 
-- 🌐 **Producción**: pendiente
+- 🌐 **Producción**: https://cohere-six.vercel.app
 - 📊 **BUILD_LOG**: [./BUILD_LOG.md](./BUILD_LOG.md) — tracking honesto del tiempo de construcción
 
 ## Diferencial técnico
