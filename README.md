@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cohere
 
-## Getting Started
+Plataforma demo para profesionales (yoga / pilates / coaching) que cobran membresías mensuales vía **Mercado Pago Subscriptions**. Portfolio piece — no es un negocio real.
 
-First, run the development server:
+> **Demo #2 del kit portfolio AR**. Demo #1 = [Norhaven Lodge](https://github.com/martin-minghetti/norhaven-lodge) (booking + Checkout Pro one-shot).
+
+## Live
+
+- 🌐 **Producción**: pendiente
+- 📊 **BUILD_LOG**: [./BUILD_LOG.md](./BUILD_LOG.md) — tracking honesto del tiempo de construcción
+
+## Diferencial técnico
+
+Norhaven cubre Checkout Pro de MP (pagos one-shot). Cohere muestra **lo que Norhaven no toca**:
+
+- **Subscriptions API** (`/preapproval_plan`) — planes recurrentes mensuales
+- **Webhook handler** para eventos `subscription_preapproval`, `subscription_authorized_payment`, `payment` (HMAC SHA256 + idempotencia)
+- **Customer portal** real con cancel / pause / resume
+- **Dashboard del pro** con subscribers activos + revenue mensual
+- **Multi-tenant** simulado (3 profesionales con sus propios planes)
+
+## Modo de pago
+
+Igual que Norhaven, flag dual `PAYMENT_MODE`:
+
+- `simulated` (default en prod público): flow completo simulado — DB-real pero sin tocar MP. Cualquiera puede probar la UX sin riesgo de pago real.
+- `production` (solo local o preview privada): MP real con test users. Para validar el flow técnico end-to-end.
+
+**No corremos `production` en deploy público** porque sería abrir la puerta a que un visitor pague plata real por "yoga" que no existe.
+
+## Stack
+
+Next.js 16 + TS + Tailwind v4 + shadcn/ui + Drizzle + Supabase Postgres + MercadoPago Subscriptions + Resend + Vitest + Playwright + Vercel.
+
+## Setup
 
 ```bash
+cp .env.example .env.local
+# completar valores
+npm install
+npm run db:push
+npm run db:seed
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tests
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm test            # Vitest unit
+npm run test:e2e    # Playwright E2E
+```
