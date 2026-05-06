@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Button } from "@/components/ui/button";
 import { getSubscriptionWithPlanAndPro } from "@/lib/queries";
+import { validatePortalToken } from "@/lib/subscription-token";
 import { formatPriceARS } from "@/lib/format";
 import { pauseAction, resumeAction, cancelAction } from "./actions";
 
@@ -27,10 +28,16 @@ const STATUS_META: Record<
 
 export default async function SubscriptionPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ t?: string }>;
 }) {
   const { id } = await params;
+  const { t: token } = await searchParams;
+  const validation = validatePortalToken(id, token);
+  if (!validation.ok) notFound();
+
   const data = await getSubscriptionWithPlanAndPro(id);
   if (!data) notFound();
   const { sub, plan, pro } = data;
@@ -41,9 +48,10 @@ export default async function SubscriptionPage({
   const isPaused = sub.status === "paused";
   const isCancellable = sub.status === "active" || sub.status === "paused";
 
-  const pauseBound = pauseAction.bind(null, sub.id);
-  const resumeBound = resumeAction.bind(null, sub.id);
-  const cancelBound = cancelAction.bind(null, sub.id);
+  const tokenStr = token ?? "";
+  const pauseBound = pauseAction.bind(null, sub.id, tokenStr);
+  const resumeBound = resumeAction.bind(null, sub.id, tokenStr);
+  const cancelBound = cancelAction.bind(null, sub.id, tokenStr);
 
   return (
     <>

@@ -39,11 +39,10 @@ export async function POST(req: Request) {
   const action = body?.action ?? null;
 
   if (!secret) {
-    console.error("MP_WEBHOOK_SECRET not set");
-    return NextResponse.json(
-      { error: "server misconfigured" },
-      { status: 500 },
+    console.warn(
+      "MP_WEBHOOK_SECRET not set; webhook is no-op (expected when PAYMENT_MODE=simulated)",
     );
+    return NextResponse.json({ ignored: true, reason: "not configured" });
   }
 
   const validation = validateMpSignature({

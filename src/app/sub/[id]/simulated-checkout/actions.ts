@@ -3,7 +3,10 @@
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
-import { validateSubscriptionToken } from "@/lib/subscription-token";
+import {
+  validateSubscriptionToken,
+  signPortalToken,
+} from "@/lib/subscription-token";
 
 export async function simulatePreapprovalAction(
   subscriptionId: string,
@@ -18,8 +21,10 @@ export async function simulatePreapprovalAction(
   });
   if (!sub) redirect("/");
 
+  const portalToken = signPortalToken(subscriptionId);
+
   if (sub.status === "active" || sub.status === "cancelled") {
-    redirect(`/sub/${sub.id}`);
+    redirect(`/sub/${sub.id}?t=${portalToken}`);
   }
 
   const fakePreapprovalId = `SIM-PRE-${Date.now()}`;
@@ -70,5 +75,5 @@ export async function simulatePreapprovalAction(
     });
   }
 
-  redirect(`/sub/${sub.id}`);
+  redirect(`/sub/${sub.id}?t=${portalToken}`);
 }

@@ -1,12 +1,24 @@
 import "server-only";
+import { headers } from "next/headers";
 import { eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { mpPreapproval, mpPreapprovalPlan } from "@/lib/mp";
-import { signSubscriptionToken } from "@/lib/subscription-token";
+import {
+  signSubscriptionToken,
+  signPortalToken,
+} from "@/lib/subscription-token";
 import {
   subscriptionInputSchema,
   type SubscriptionInput,
 } from "@/lib/subscription-schema";
+import { rateLimit } from "@/lib/rate-limit";
+
+async function getClientIp(): Promise<string> {
+  const h = await headers();
+  const fwd = h.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0]!.trim();
+  return h.get("x-real-ip") ?? "unknown";
+}
 
 export { subscriptionInputSchema, type SubscriptionInput };
 
@@ -17,6 +29,15 @@ export type CreateSubscriptionResult =
 export async function createSubscription(
   input: SubscriptionInput,
 ): Promise<CreateSubscriptionResult> {
+  const ip = await getClientIp();
+  const rl = rateLimit(`subscribe:${ip}`, 5, 3600);
+  if (!rl.ok) {
+    return {
+      ok: false,
+      error: `Demasiadas suscripciones desde tu IP. Probá de nuevo en ${Math.ceil(rl.resetInSeconds / 60)} min.`,
+    };
+  }
+
   const pro = await db.query.pros.findFirst({
     where: eq(schema.pros.slug, input.proSlug),
   });
@@ -64,7 +85,7 @@ export async function createSubscription(
             transaction_amount: plan.pricePerMonth,
             currency_id: "ARS",
           },
-          back_url: `${siteUrl}/sub/${sub.id}`,
+          back_url: `${siteUrl}/sub/${sub.id}?t=${signPortalToken(sub.id)}`,
         },
       });
       if (!created.id) throw new Error("MP no devolvió plan id");

@@ -57,7 +57,7 @@ test.describe("Cohere subscription happy path", () => {
 
     await page.getByRole("button", { name: /autorizar.*demo/i }).click();
 
-    await page.waitForURL(/\/sub\/[a-f0-9-]+$/, { timeout: 30_000 });
+    await page.waitForURL(/\/sub\/[a-f0-9-]+(\?t=[^/]+)?$/, { timeout: 30_000 });
 
     await expect(page.getByText(/activa/i).first()).toBeVisible();
     await expect(page.getByRole("button", { name: /pausar/i })).toBeVisible();
