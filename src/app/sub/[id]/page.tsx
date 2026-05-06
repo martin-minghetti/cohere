@@ -12,10 +12,14 @@ export const dynamic = "force-dynamic";
 
 const STATUS_META: Record<
   string,
-  { label: string; tone: "ok" | "wait" | "err"; Icon: React.ComponentType<{ className?: string }> }
+  {
+    label: string;
+    tone: "ok" | "wait" | "err";
+    Icon: React.ComponentType<{ className?: string }>;
+  }
 > = {
   active: { label: "Activa", tone: "ok", Icon: Check },
-  pending: { label: "Pendiente de autorización", tone: "wait", Icon: Clock },
+  pending: { label: "Pendiente", tone: "wait", Icon: Clock },
   paused: { label: "Pausada", tone: "wait", Icon: Pause },
   cancelled: { label: "Cancelada", tone: "err", Icon: X },
   failed: { label: "Rechazada", tone: "err", Icon: X },
@@ -45,25 +49,25 @@ export default async function SubscriptionPage({
     <>
       <SiteHeader />
 
-      <section className="mx-auto max-w-2xl px-6 pt-16 pb-32 lg:px-10">
-        <div className="flex items-center gap-3">
+      <section className="mx-auto max-w-xl px-6 pt-14 pb-24 lg:px-10">
+        <div className="flex items-center gap-2.5">
           <span
-            className={`flex h-12 w-12 items-center justify-center rounded-full ${
+            className={`flex h-7 w-7 items-center justify-center rounded-sm ${
               meta.tone === "ok"
-                ? "bg-primary text-primary-foreground"
+                ? "bg-accent text-accent-foreground"
                 : meta.tone === "wait"
                   ? "bg-secondary text-foreground"
-                  : "bg-destructive/15 text-destructive"
+                  : "bg-destructive/10 text-destructive"
             }`}
           >
-            <StatusIcon className="h-6 w-6" />
+            <StatusIcon className="h-3.5 w-3.5" />
           </span>
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             {meta.label}
           </p>
         </div>
 
-        <h1 className="mt-6 font-serif text-4xl leading-[1.1] md:text-5xl">
+        <h1 className="mt-6 text-4xl font-semibold leading-[1.05] tracking-tight md:text-5xl">
           {isActive
             ? `Listo, ${sub.subscriberName.split(" ")[0]}.`
             : isPaused
@@ -76,46 +80,45 @@ export default async function SubscriptionPage({
         </h1>
 
         {isActive && sub.nextBillingDate && (
-          <p className="mt-3 text-lg text-foreground/80">
+          <p className="mt-3 text-[14px] text-muted-foreground">
             Próximo cobro:{" "}
-            <span className="font-medium text-foreground">
+            <span className="font-semibold text-foreground">
               {sub.nextBillingDate}
             </span>
           </p>
         )}
 
-        <div className="mt-10 rounded-2xl border border-border/60 bg-card p-7 shadow-sm">
+        <div className="mt-10 rounded-md border border-border bg-card p-6">
           <Link
             href={`/p/${pro.slug}`}
-            className="text-sm text-muted-foreground hover:text-foreground"
+            className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground hover:text-foreground"
           >
             {pro.name}
           </Link>
-          <h2 className="mt-1 font-serif text-2xl">{plan.name}</h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          <h2 className="mt-1 text-xl font-semibold">{plan.name}</h2>
+          <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
             {plan.description}
           </p>
-          <div className="mt-7 flex items-baseline justify-between border-t border-border/40 pt-6">
-            <span className="text-sm text-muted-foreground">
+          <div className="mt-6 flex items-baseline justify-between border-t border-border/60 pt-5">
+            <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
               Cobro mensual
             </span>
-            <span className="font-serif text-3xl">
+            <span className="text-2xl font-semibold tracking-tight">
               {formatPriceARS(plan.pricePerMonth)}
             </span>
           </div>
         </div>
 
         {(isActive || isPaused) && (
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             {isActive && (
               <form action={pauseBound} className="flex-1">
                 <Button
                   type="submit"
                   variant="outline"
-                  size="lg"
-                  className="w-full rounded-full text-base"
+                  className="h-11 w-full rounded-md border-border text-[12px] font-semibold uppercase tracking-[0.16em]"
                 >
-                  <Pause className="mr-2 h-4 w-4" />
+                  <Pause className="mr-2 h-3.5 w-3.5" />
                   Pausar
                 </Button>
               </form>
@@ -124,10 +127,9 @@ export default async function SubscriptionPage({
               <form action={resumeBound} className="flex-1">
                 <Button
                   type="submit"
-                  size="lg"
-                  className="w-full rounded-full text-base"
+                  className="h-11 w-full rounded-md bg-primary text-[12px] font-semibold uppercase tracking-[0.16em] text-primary-foreground hover:bg-primary/90"
                 >
-                  <Play className="mr-2 h-4 w-4" />
+                  <Play className="mr-2 h-3.5 w-3.5" />
                   Reanudar
                 </Button>
               </form>
@@ -137,10 +139,9 @@ export default async function SubscriptionPage({
                 <Button
                   type="submit"
                   variant="outline"
-                  size="lg"
-                  className="w-full rounded-full text-base text-destructive hover:text-destructive"
+                  className="h-11 w-full rounded-md border-border text-[12px] font-semibold uppercase tracking-[0.16em] text-destructive hover:text-destructive"
                 >
-                  <X className="mr-2 h-4 w-4" />
+                  <X className="mr-2 h-3.5 w-3.5" />
                   Cancelar suscripción
                 </Button>
               </form>
@@ -150,7 +151,7 @@ export default async function SubscriptionPage({
 
         <Link
           href={`/p/${pro.slug}`}
-          className="mt-12 inline-block text-sm text-muted-foreground underline-offset-4 hover:underline"
+          className="mt-12 inline-block text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground hover:text-foreground"
         >
           ← Volver al perfil
         </Link>

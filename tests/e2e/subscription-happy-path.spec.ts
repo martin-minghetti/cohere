@@ -55,7 +55,7 @@ test.describe("Cohere subscription happy path", () => {
     await expect(page.getByText(/autorizá tu suscripción/i)).toBeVisible();
     await expect(page.getByText(subscriberEmail).first()).toBeVisible();
 
-    await page.getByRole("button", { name: /autorizar suscripción/i }).click();
+    await page.getByRole("button", { name: /autorizar.*demo/i }).click();
 
     await page.waitForURL(/\/sub\/[a-f0-9-]+$/, { timeout: 30_000 });
 
